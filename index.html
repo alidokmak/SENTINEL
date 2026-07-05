@@ -1,24 +1,181 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SENTINEL</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SENTINEL — Uncertainty-Aware Human-in-the-Loop AI for Aerial Target Triage</title>
+<meta name="description" content="SENTINEL ranks stable AI detections and defers uncertain ones to a human operator. Training-free uncertainty, selective deferral, explainable priority scoring.">
+<!-- Optional Google Fonts (the only external dependency; remove the 2 lines below for fully offline use) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
-<body style="font-family: Arial; max-width: 900px; margin: 60px auto; line-height: 1.6;">
+<body>
+
+<!-- ======================= NAV ======================= -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">SENTINEL</a>
+    <nav id="menu">
+      <a href="#overview">Overview</a>
+      <a href="#how">How&nbsp;It&nbsp;Works</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#results">Results</a>
+      <a href="#limits">Limitations</a>
+      <a href="#downloads">Materials</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button id="burger" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<!-- ======================= 1. HERO ======================= -->
+<section class="hero" id="top">
+  <p class="tag">UNCLASSIFIED&nbsp;//&nbsp;RESEARCH SIMULATION</p>
   <h1>SENTINEL</h1>
-  <h2>Uncertainty-Aware AI Decision Support</h2>
-  <p>
-    SENTINEL is a human-in-the-loop AI system for aerial target triage.
-    Additional materials, demo video, dashboard screenshots, evaluation results,
-    and documentation will be added here.
+  <p class="subtitle">Uncertainty-Aware Human-in-the-Loop AI for Aerial Target Triage</p>
+  <p class="lead">
+    SENTINEL is an AI decision-support system that <strong>ranks stable detections</strong> and
+    <strong>defers uncertain detections to a human operator</strong>.
   </p>
-  <h3>Project Materials</h3>
-  <ul>
-    <li>Interactive dashboard — coming soon</li>
-    <li>Demo video — coming soon</li>
-    <li>Technical documentation — coming soon</li>
-    <li>Evaluation results — coming soon</li>
+  <p class="lead ar" dir="rtl" lang="ar">
+    سنتينل نظام دعم قرار: يرتّب الاكتشافات المستقرة آليًا، ويحيل الاكتشافات غير المؤكدة إلى مشغّل بشري.
+  </p>
+  <p class="hero-motto">The AI that knows when to ask for help.</p>
+</section>
+
+<!-- ======================= 2. OVERVIEW ======================= -->
+<section id="overview">
+  <h2><span>01</span> Project Overview</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Not a new detector</h3>
+      <p>SENTINEL does not train or modify any detector. <strong>YOLOv8n is used frozen</strong>, exactly as published, on COCO weights.</p>
+    </div>
+    <div class="card">
+      <h3>The contribution is the triage layer</h3>
+      <p>A training-free, label-free layer measures how <em>stable</em> each detection is, then decides what may be auto-ranked and what must go to a human.</p>
+    </div>
+    <div class="card">
+      <h3>Supports the operator — never replaces him</h3>
+      <p>SENTINEL ranks <strong>attention, not actions</strong>. There is no autonomous engagement and no targeting output. The human remains responsible by design.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 3. HOW IT WORKS ======================= -->
+<section id="how" class="alt">
+  <h2><span>02</span> How It Works</h2>
+
+  <div class="pipeline">
+    <div class="step">Aerial Image</div><div class="arrow">→</div>
+    <div class="step">YOLOv8 Detection<br><small>frozen · COCO</small></div><div class="arrow">→</div>
+    <div class="step">Test-Time Augmentation ×5<br><small>flip · brightness± · scale</small></div><div class="arrow">→</div>
+    <div class="step">Uncertainty Score U</div><div class="arrow">→</div>
+    <div class="step gate">Decision Gate<br><code>U &gt; 0.35 ?</code></div><div class="arrow">→</div>
+    <div class="fork">
+      <div class="step ok">Priority List<br><small>auto-ranked by P</small></div>
+      <div class="step warn">Human Review Queue<br><small>deferred</small></div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step op">Human Operator</div>
+  </div>
+
+  <div class="formulas">
+    <code>U = 0.7 × (1 − frequency × class_agreement) + 0.3 × min(score_std / 0.15, 1)</code>
+    <code>P = TypeWeight × (0.2 + 0.8 × RelativeProminence)</code>
+    <p class="note">All constants are declared openly in the source code — every ranking is auditable.</p>
+  </div>
+</section>
+
+<!-- ======================= 4. DASHBOARD ======================= -->
+<section id="dashboard">
+  <h2><span>03</span> Dashboard</h2>
+  <!-- REPLACE IMAGE: images/hero_dashboard.png -->
+  <figure>
+    <img src="images/hero_dashboard.png" alt="SENTINEL operator console on aerial imagery" loading="lazy">
+    <figcaption>The operator console: contact boxes on imagery (left) and the decision panel (right). Civilian VisDrone-style imagery — simulation only.</figcaption>
+  </figure>
+  <div class="cols">
+    <div class="card"><h3>Priority List</h3><p>Stable detections, auto-ranked by the transparent priority score P.</p></div>
+    <div class="card"><h3>Human Review Queue</h3><p>Unstable detections are deferred — they need the operator's eyes, not suppression.</p></div>
+    <div class="card">
+      <h3>Explainable Priority Card</h3>
+      <!-- REPLACE IMAGE: images/card_crop.png -->
+      <img class="inset" src="images/card_crop.png" alt="Explainable Priority Card" loading="lazy">
+      <p>Every ranking decomposed on screen: type weight × relative prominence → P, plus U and its three components.</p>
+    </div>
+    <div class="card"><h3>NAI (simulated)</h3><p>A Named Area of Interest polygon flags intrusions. Image-space simulation — no georegistration.</p></div>
+    <div class="card"><h3>Assessment Confidence Index</h3><p>Confidence + TTA stability + retained coverage. It measures assessment confidence, <em>not detection completeness</em>.</p></div>
+  </div>
+</section>
+
+<!-- ======================= 5. RESULTS ======================= -->
+<section id="results" class="alt">
+  <h2><span>04</span> Results <small class="muted">(label-free evaluation)</small></h2>
+  <div class="stats">
+    <div class="stat"><b>454</b><span>detections</span></div>
+    <div class="stat"><b>49</b><span>frames</span></div>
+    <div class="stat"><b>5</b><span>TTA views</span></div>
+    <div class="stat"><b>5.3%</b><span>deferred to human review</span></div>
+    <div class="stat"><b>94.7%</b><span>auto-ranked</span></div>
+    <div class="stat"><b>0.45 vs 0.11</b><span>mean U — deferred vs retained</span></div>
+  </div>
+  <div class="figrow">
+    <!-- REPLACE IMAGE: images/fig_histogram.png -->
+    <figure>
+      <img src="images/fig_histogram.png" alt="Uncertainty distribution: retained vs deferred" loading="lazy">
+      <figcaption>Deferral isolates a distinct population — separated without any ground-truth labels.</figcaption>
+    </figure>
+    <!-- REPLACE IMAGE: images/fig_threshold.png -->
+    <figure>
+      <img src="images/fig_threshold.png" alt="Defer-threshold sensitivity" loading="lazy">
+      <figcaption>The threshold is a workload dial: at τ = 0.35 the operator reviews 1 in 19 detections.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ======================= 6. LIMITATIONS ======================= -->
+<section id="limits">
+  <h2><span>05</span> Limitations &amp; Ethics</h2>
+  <ul class="limits">
+    <li><strong>False negatives are invisible:</strong> TTA scores only what the detector finds; a missed object raises no flag.</li>
+    <li><strong>Domain shift is real:</strong> a COCO-trained detector under-detects small aerial objects. The layer is detector-agnostic — a fine-tuned model slots in unchanged.</li>
+    <li><strong>Civilian proxy data:</strong> VisDrone-style drone imagery, simulation only. No combatant labels exist or are inferred.</li>
+    <li><strong>P ranks operator attention, not battlefield danger.</strong></li>
+    <li class="good"><strong>Human remains in control.</strong> Uncertain cases are routed to a person, never suppressed.</li>
+    <li class="good"><strong>No autonomous engagement.</strong> No targeting output, no actuation of any kind.</li>
   </ul>
-  <p><strong>Status:</strong> Thesis project page under construction.</p>
+</section>
+
+<!-- ======================= 7. DOWNLOADS ======================= -->
+<section id="downloads" class="alt">
+  <h2><span>06</span> Materials</h2>
+  <div class="btns">
+    <!-- REPLACE LINKS: point these to real files in the downloads/ folder or repo -->
+    <a class="btn" href="downloads/SENTINEL_poster_A1.pdf">Poster (PDF)</a>
+    <a class="btn" href="https://github.com/alidokmak/SENTINEL">Source Code</a>
+    <a class="btn" href="downloads/technical_documentation.pdf">Technical Documentation</a>
+    <a class="btn" href="downloads/evaluation_results.zip">Evaluation Results</a>
+    <a class="btn soon" href="#" onclick="return false;">Demo Video — Coming Soon</a>
+  </div>
+</section>
+
+<!-- ======================= 8. CONTACT ======================= -->
+<section id="contact">
+  <h2><span>07</span> Contact</h2>
+  <p class="contact">
+    <strong>Ali Dokmak</strong><br>
+    SENTINEL Thesis Project<br>
+    GitHub: <a href="https://github.com/alidokmak/SENTINEL">github.com/alidokmak/SENTINEL</a>
+  </p>
+</section>
+
+<footer>
+  UNCLASSIFIED — research simulation only. No operational data, no targeting function.<br>
+  Detector: YOLOv8n (frozen, COCO) · Imagery: civilian VisDrone-style footage used as proxy · Evaluation is label-free.
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
