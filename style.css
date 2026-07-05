@@ -1,0 +1,114 @@
+/* ============ SENTINEL site — bright academic, restrained military ============ */
+/* Palette: teal #10646E · slate #46627A · olive #6B7048 · amber #C97A10 · ink #24272B */
+
+:root{
+  --bg:#FAF8F3; --panel:#F0EEE7; --teal:#10646E; --teal-d:#0B4A52;
+  --slate:#46627A; --olive:#6B7048; --amber:#C97A10; --green:#4E7A5A;
+  --ink:#24272B; --muted:#5B6672; --hair:#DDD9CE;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+     background:var(--bg);color:var(--ink);line-height:1.6}
+code{font-family:"IBM Plex Mono",Consolas,monospace}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;background:rgba(250,248,243,.95);backdrop-filter:blur(4px);
+     border-bottom:2px solid var(--olive);z-index:10}
+.nav-inner{max-width:1050px;margin:auto;display:flex;align-items:center;
+           justify-content:space-between;padding:.6rem 1rem}
+.brand{font-weight:700;letter-spacing:.12em;color:var(--teal-d);text-decoration:none;font-size:1.15rem}
+#menu a{margin-left:1.1rem;text-decoration:none;color:var(--slate);font-size:.92rem;font-weight:600}
+#menu a:hover{color:var(--teal)}
+#burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--teal-d);cursor:pointer}
+
+/* ---------- sections ---------- */
+section{max-width:1050px;margin:auto;padding:3.2rem 1rem}
+section.alt{max-width:none;background:var(--panel)}
+section.alt > *{max-width:1050px;margin-left:auto;margin-right:auto}
+h2{font-size:1.6rem;margin-bottom:1.4rem;border-bottom:2px solid var(--olive);
+   padding-bottom:.45rem}
+h2 span{color:var(--slate);margin-right:.4rem}
+h2 .muted{font-size:.95rem;color:var(--muted);font-weight:400}
+
+/* ---------- hero ---------- */
+.hero{text-align:center;padding:4.5rem 1rem 3.5rem}
+.tag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+     letter-spacing:.14em;color:#fff;background:var(--teal);padding:.25rem .8rem;
+     border-bottom:3px solid var(--olive)}
+.hero h1{font-size:clamp(2.8rem,8vw,4.6rem);letter-spacing:.1em;margin:.8rem 0 .2rem}
+.subtitle{font-size:clamp(1rem,3vw,1.3rem);color:var(--teal-d);font-weight:600}
+.lead{max-width:680px;margin:1rem auto 0;color:var(--ink)}
+.lead.ar{font-size:1.05rem}
+.hero-motto{margin-top:1.2rem;font-style:italic;color:var(--muted)}
+
+/* ---------- cards / columns ---------- */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.card{background:#fff;border:1px solid var(--hair);border-top:3px solid var(--teal);
+      padding:1.1rem 1.2rem;border-radius:6px}
+.card h3{font-size:1.02rem;color:var(--teal-d);margin-bottom:.4rem}
+.card p{font-size:.93rem}
+.card .inset{width:100%;border:1px solid var(--hair);border-radius:4px;margin:.4rem 0}
+
+/* ---------- pipeline ---------- */
+.pipeline{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;justify-content:center;
+          margin-bottom:1.6rem}
+.step{background:#fff;border:1.5px solid var(--hair);border-radius:6px;
+      padding:.55rem .9rem;text-align:center;font-weight:600;font-size:.88rem}
+.step small{font-weight:400;color:var(--muted)}
+.step.gate{border-color:var(--ink)}
+.step.gate code{color:#8E2A23}
+.step.ok{border-color:var(--teal);background:#E7EEEC;color:var(--teal-d)}
+.step.warn{border-color:var(--amber);background:#F7EEDE;color:#8F5606}
+.step.op{border-color:var(--ink)}
+.fork{display:flex;flex-direction:column;gap:.5rem}
+.arrow{color:var(--slate);font-weight:700}
+.formulas{text-align:center}
+.formulas code{display:block;background:#fff;border:1px solid var(--hair);
+               padding:.55rem .8rem;margin:.45rem auto;max-width:720px;
+               border-radius:4px;font-size:.85rem;overflow-x:auto}
+.note{font-size:.85rem;color:var(--muted);font-style:italic}
+
+/* ---------- figures ---------- */
+figure{margin:0 0 1.4rem}
+figure img{width:100%;border:1px solid var(--hair);border-radius:6px}
+figcaption{font-size:.85rem;color:var(--muted);margin-top:.4rem}
+.figrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+       gap:.8rem;margin-bottom:1.6rem}
+.stat{background:#fff;border:1px solid var(--hair);border-top:3px solid var(--teal);
+      border-radius:6px;text-align:center;padding:.9rem .4rem}
+.stat b{display:block;font-size:1.5rem;color:var(--teal-d)}
+.stat span{font-size:.8rem;color:var(--muted)}
+
+/* ---------- limitations ---------- */
+.limits{list-style:none}
+.limits li{padding:.55rem .9rem;border-right:none;border-left:4px solid var(--amber);
+           background:#fff;border-radius:4px;margin-bottom:.5rem;font-size:.93rem}
+.limits li.good{border-left-color:var(--green)}
+
+/* ---------- buttons ---------- */
+.btns{display:flex;flex-wrap:wrap;gap:.7rem}
+.btn{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;
+     padding:.65rem 1.2rem;border-radius:5px;font-weight:600;font-size:.92rem}
+.btn:hover{background:var(--teal-d)}
+.btn.soon{background:var(--panel);color:var(--muted);border:1px dashed var(--muted);cursor:default}
+
+/* ---------- contact & footer ---------- */
+.contact{font-size:1rem}
+.contact a{color:var(--teal)}
+footer{text-align:center;font-size:.78rem;color:var(--muted);
+       border-top:2px solid var(--olive);padding:1.4rem 1rem;margin-top:2rem}
+
+/* ---------- mobile ---------- */
+@media (max-width:720px){
+  #menu{display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg);
+        border-bottom:1px solid var(--hair);padding:.8rem 1rem}
+  #menu.open{display:flex;flex-direction:column;gap:.6rem}
+  #menu a{margin-left:0}
+  #burger{display:block}
+  .pipeline{flex-direction:column}
+  .arrow{transform:rotate(90deg)}
+}
